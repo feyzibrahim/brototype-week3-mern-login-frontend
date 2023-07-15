@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../redux/reducers/userSlice";
+import { loginUser } from "../redux/actions/userActions";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [userEmail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Login = () => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-
+    const email = userEmail.toLowerCase();
     let userCredentials = {
       email,
       password,
@@ -44,9 +44,9 @@ const Login = () => {
               className="input-box-default"
               id="email"
               type="email"
-              placeholder="E.g. Faiz@gmail.com"
+              placeholder="Faiz@gmail.com"
               required
-              value={email}
+              value={userEmail}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -61,19 +61,16 @@ const Login = () => {
               className="input-box-default"
               id="password"
               type="password"
-              placeholder="E.g. Faiz@1234"
+              placeholder="Faiz@1234"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button className="btn btn-blue" type="submit" disabled={loading}>
               {loading ? "Loading..." : "Login"}
             </button>
-            <a className="form-additional" href="#">
-              Forgot Password?
-            </a>
           </div>
           {error && <p className="error-p-tag">{error}</p>}
         </form>

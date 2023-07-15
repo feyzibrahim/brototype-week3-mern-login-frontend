@@ -1,69 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-// Login api calling and returning data to redux state
-export const loginUser = createAsyncThunk(
-  "user/loginUser",
-  async (userCredentials, { rejectWithValue }) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const { data } = await axios.post(
-        `http://localhost:4000/api/user/login`,
-        JSON.stringify(userCredentials),
-        config
-      );
-
-      localStorage.setItem("user", JSON.stringify(data));
-
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.error) {
-        console.log(error.response.data.error);
-
-        return rejectWithValue(error.response.data.error);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  }
-);
-
-// Signup api calling and returning data to redux state
-export const signUpUser = createAsyncThunk(
-  "user/signUpUser",
-  async (userCredentials, { rejectWithValue }) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      // Axios Post
-      const { data } = await axios.post(
-        `http://localhost:4000/api/user/signup`,
-        JSON.stringify(userCredentials),
-        config
-      );
-
-      localStorage.setItem("user", JSON.stringify(data));
-
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.error) {
-        console.log(error.response.data.error);
-
-        return rejectWithValue(error.response.data.error);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { loginUser, signUpUser } from "../actions/userActions";
 
 const user = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
@@ -82,6 +18,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.user = null;
       state.error = null;
+      window.location.reload();
     },
   },
   extraReducers: (builder) => {
@@ -101,7 +38,7 @@ const userSlice = createSlice({
         state.user = null;
         state.error = action.payload;
       })
-      // Signup States
+      // Sign-up States
       .addCase(signUpUser.pending, (state) => {
         state.loading = true;
         state.error = null;

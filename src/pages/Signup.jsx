@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-// import { useDispatch, useSelector } from "react-redux";
-// import { loginUser } from "../redux/reducers/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signUpUser } from "../redux/actions/userActions";
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [userEmail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordA, setPasswordA] = useState("");
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,26 +19,31 @@ const Signup = () => {
 
   const { user, loading, error } = useSelector((state) => state.user);
 
-  const handleLoginSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+
+    const userName = name;
+    const email = userEmail.toLowerCase();
+    if (password != passwordA) {
+      return;
+    }
 
     let userCredentials = {
       email,
       password,
+      userName,
     };
 
-    console.log(userCredentials);
+    // console.log(userCredentials);
 
-    // dispatch(loginUser(userCredentials)).then((result) => {
-    //   console.log(result);
-    // });
+    dispatch(signUpUser(userCredentials));
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full p-6 bg-white shadow-lg rounded mx-5 lg:mx-0 ">
         <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
-        <form onSubmit={handleLoginSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="form-label" htmlFor="name">
               Name
@@ -48,7 +52,7 @@ const Signup = () => {
               className="input-box-default"
               id="name"
               type="text"
-              placeholder="E.g. Feyz Ibrahim"
+              placeholder="Feyz Ibrahim"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -62,9 +66,9 @@ const Signup = () => {
               className="input-box-default"
               id="email"
               type="email"
-              placeholder="E.g. faizibrahim@gmail.com"
+              placeholder="faizibrahim@gmail.com"
               required
-              value={email}
+              value={userEmail}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -77,10 +81,24 @@ const Signup = () => {
               className="input-box-default"
               id="password"
               type="password"
-              placeholder="E.g. Faiz@1234"
+              placeholder="Faiz@1234"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="form-label" htmlFor="password">
+              Confirm Password
+            </label>
+            <input
+              className="input-box-default"
+              id="passwordA"
+              type="password"
+              placeholder="Faiz@1234"
+              required
+              value={passwordA}
+              onChange={(e) => setPasswordA(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">
