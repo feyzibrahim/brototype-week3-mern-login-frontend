@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { adminGetAllUser } from "../actions/adminUserActions";
+import {
+  adminGetAllUser,
+  deleteUser,
+  updateUser,
+} from "../actions/adminUserActions";
 
 const adminUserSlice = createSlice({
   name: "adminUser",
@@ -16,12 +20,46 @@ const adminUserSlice = createSlice({
         state.error = null;
       })
       .addCase(adminGetAllUser.fulfilled, (state, { payload }) => {
-        console.log("extra reducer: " + payload);
         state.adminUser = payload;
         state.loading = false;
         state.error = null;
       })
       .addCase(adminGetAllUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.adminUser = null;
+        state.error = payload;
+      })
+      // Deleting Users
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.adminUser = state.adminUser.filter(
+          (us) => us._id !== payload._id
+        );
+        state.error = null;
+      })
+      .addCase(deleteUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.adminUser = null;
+        state.error = payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        const index = state.adminUser.findIndex(
+          (user) => user._id === payload._id
+        );
+
+        if (index !== -1) {
+          state.adminUser[index] = payload;
+        }
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
         state.loading = false;
         state.adminUser = null;
         state.error = payload;
