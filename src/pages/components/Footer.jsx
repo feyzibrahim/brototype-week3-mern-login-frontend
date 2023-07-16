@@ -1,4 +1,9 @@
 import React from "react";
+import {
+  AiFillFacebook,
+  AiFillTwitterCircle,
+  AiFillInstagram,
+} from "react-icons/ai";
 
 const Footer = () => {
   return (
@@ -44,24 +49,24 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold text-white">Follow Us</h3>
-            <div className="flex space-x-4 mt-4">
+            <div className="flex space-x-4 mt-4 text-4xl">
               <a
                 href="#"
                 className="text-gray-300 hover:text-white transition duration-500"
               >
-                Facebook
+                <AiFillFacebook />
               </a>
               <a
                 href="#"
                 className="text-gray-300 hover:text-white transition duration-500"
               >
-                Twitter
+                <AiFillTwitterCircle />
               </a>
               <a
                 href="#"
                 className="text-gray-300 hover:text-white transition duration-500"
               >
-                Instagram
+                <AiFillInstagram />
               </a>
             </div>
           </div>

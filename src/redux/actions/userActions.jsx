@@ -43,8 +43,6 @@ export const signUpUser = createAsyncThunk(
         },
       };
 
-      console.log("Before signup: " + userCredentials);
-
       // Axios Post
       const { data } = await axios.post(
         `http://localhost:4000/api/user/signup`,

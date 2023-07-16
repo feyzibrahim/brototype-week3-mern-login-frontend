@@ -41,3 +41,15 @@
 .navbar-anchor {
   @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
 }
+
+.table-head {
+  @apply py-3 px-6 bg-gray-200 text-gray-600 font-bold text-sm border-b border-gray-100;
+}
+
+.table-data {
+  @apply py-4 px-6 border-b border-gray-100;
+}
+
+.table-button {
+  @apply hover:bg-slate-200 hover:text-red-400 rounded p-1 text-lg;
+}
