@@ -3,6 +3,7 @@ import {
   adminGetAllUser,
   deleteUser,
   updateUser,
+  createUser,
 } from "../actions/adminUserActions";
 
 const adminUserSlice = createSlice({
@@ -42,9 +43,9 @@ const adminUserSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, { payload }) => {
         state.loading = false;
-        state.adminUser = null;
         state.error = payload;
       })
+      // Updating user details
       .addCase(updateUser.pending, (state) => {
         state.loading = true;
       })
@@ -61,7 +62,19 @@ const adminUserSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state, { payload }) => {
         state.loading = false;
-        state.adminUser = null;
+        state.error = payload;
+      })
+      // Creating new users
+      .addCase(createUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.adminUser.push(payload);
+      })
+      .addCase(createUser.rejected, (state, { payload }) => {
+        state.loading = false;
         state.error = payload;
       });
   },

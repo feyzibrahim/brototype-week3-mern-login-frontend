@@ -77,3 +77,26 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
+
+export const createUser = createAsyncThunk(
+  "adminUser/createUser",
+  async (userCredentials, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `http://localhost:4000/api/admin/user`,
+        userCredentials,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        console.log(error.response.data.error);
+
+        return rejectWithValue(error.response.data.error);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);

@@ -12,7 +12,10 @@ const UpdateToggle = ({ toggleUpdate, userList }) => {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  // Update the user using redux
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     dispatch(
       updateUser({
         userId: userList._id,
@@ -20,12 +23,13 @@ const UpdateToggle = ({ toggleUpdate, userList }) => {
         userName: name,
         userType,
       })
-    );
+    ).then(() => toggleUpdate());
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50">
       <div className="bg-white p-4 rounded shadow-md w-1/3">
+        {/* Heading and new user button */}
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-bold ">Update User</h2>
           <button
@@ -37,7 +41,6 @@ const UpdateToggle = ({ toggleUpdate, userList }) => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* <form> */}
           <div className="mb-4">
             <label className="form-label" htmlFor="name">
               Name

@@ -6,6 +6,7 @@ import { adminGetAllUser } from "../../redux/actions/adminUserActions";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import SignUpToggle from "./components/SignUpToggle";
 import UserTableData from "./components/UserTableData";
+import LoadingCircle from "../components/LoadingCircle";
 
 const AdminDashboard = () => {
   const [signUpOn, setSignUpOn] = useState(false);
@@ -24,7 +25,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen pt-20">
       {signUpOn && <SignUpToggle toggleSignUp={toggleSignUp} />}
-      <div className="w-3/5 mx-auto my-2 flex justify-between">
+      <div className="w-4/5 mx-auto my-2 flex justify-between">
         <h1>Admin Dashboard</h1>
         <button
           className="btn btn-blue flex items-center"
@@ -33,10 +34,9 @@ const AdminDashboard = () => {
           <AiOutlineUserAdd className="mr-2" /> New User
         </button>
       </div>
-      {loading ? <p>Loading....</p> : ""}
-      {error && <p>{error}</p>}
-      {!loading && (
-        <table className="table w-3/5 mx-auto bg-white ">
+      {loading ? <LoadingCircle /> : ""}
+      {adminUser && (
+        <table className="table w-4/5 mx-auto bg-white ">
           <thead className="text-left">
             <tr>
               <th className="table-head">#</th>

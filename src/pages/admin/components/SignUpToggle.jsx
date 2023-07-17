@@ -1,14 +1,29 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { createUser } from "../../../redux/actions/adminUserActions";
 
 const SignUpToggle = ({ toggleSignUp }) => {
   const [name, setName] = useState("");
   const [userEmail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordA, setPasswordA] = useState("");
+  const [type, setType] = useState("");
 
   const { loading, error } = useSelector((state) => state.adminUser);
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const userCredentials = {
+      email: userEmail,
+      password,
+      userName: name,
+      userType: type,
+    };
+    dispatch(createUser(userCredentials)).then(() => toggleSignUp());
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50">
@@ -23,8 +38,7 @@ const SignUpToggle = ({ toggleSignUp }) => {
           </button>
         </div>
 
-        {/* <form onSubmit={handleSubmit}> */}
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="form-label" htmlFor="name">
               Name
@@ -69,7 +83,7 @@ const SignUpToggle = ({ toggleSignUp }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="form-label" htmlFor="password">
+            <label className="form-label" htmlFor="passwordA">
               Confirm Password
             </label>
             <input
@@ -80,6 +94,20 @@ const SignUpToggle = ({ toggleSignUp }) => {
               required
               value={passwordA}
               onChange={(e) => setPasswordA(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="form-label" htmlFor="type">
+              User Type
+            </label>
+            <input
+              className="input-box-default"
+              id="type"
+              type="text"
+              placeholder="User | Admin"
+              required
+              value={type}
+              onChange={(e) => setType(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">
