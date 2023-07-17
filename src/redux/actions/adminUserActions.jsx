@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const config = {
@@ -97,6 +97,20 @@ export const createUser = createAsyncThunk(
       } else {
         return rejectWithValue(error.message);
       }
+    }
+  }
+);
+
+export const selectFilteredUsers = createSelector(
+  (state) => state.adminUser.adminUser,
+  (state) => state.adminUser.searchQuery,
+  (adminUser, searchQuery) => {
+    if (searchQuery.trim() === "") {
+      return adminUser;
+    } else {
+      return adminUser.filter((user) =>
+        user.userName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
   }
 );

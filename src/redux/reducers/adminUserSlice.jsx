@@ -12,8 +12,13 @@ const adminUserSlice = createSlice({
     adminUser: [],
     loading: false,
     error: null,
+    searchQuery: "",
   },
-  reducers: {},
+  reducers: {
+    setSearchQuery: (state, { payload }) => {
+      state.searchQuery = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(adminGetAllUser.pending, (state) => {
@@ -79,5 +84,7 @@ const adminUserSlice = createSlice({
       });
   },
 });
+
+export const { setSearchQuery } = adminUserSlice.actions;
 
 export default adminUserSlice.reducer;
