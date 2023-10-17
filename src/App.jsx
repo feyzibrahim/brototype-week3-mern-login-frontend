@@ -5,13 +5,14 @@ import Home from "./pages/home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
-import Navbar from "./pages/components/navbar";
+import Navbar from "./pages/components/Navbar";
 import AboutPage from "./pages/AboutPage";
 import Footer from "./pages/components/Footer";
 import Error404 from "./pages/Error404";
 
 import { useSelector } from "react-redux";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -35,6 +36,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
       <Footer />

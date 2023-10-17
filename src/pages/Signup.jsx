@@ -8,6 +8,9 @@ const Signup = () => {
   const [userEmail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordA, setPasswordA] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [previewPhoto, setPreviewPhoto] = useState(null);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,6 +19,15 @@ const Signup = () => {
       navigate("/");
     }
   });
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePhoto(file);
+
+    // Create a preview URL for the selected file
+    const previewURL = URL.createObjectURL(file);
+    setPreviewPhoto(previewURL);
+  };
 
   const { user, loading, error } = useSelector((state) => state.user);
 
@@ -45,6 +57,25 @@ const Signup = () => {
         <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
+            <div className="mb-4">
+              <label className="form-label" htmlFor="profilePhoto">
+                Profile Photo
+              </label>
+              <input
+                className="input-box-default"
+                id="profilePhoto"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {previewPhoto && (
+                <img
+                  src={previewPhoto}
+                  alt="Profile Preview"
+                  className="mt-2 w-20 h-20 object-cover rounded-full"
+                />
+              )}
+            </div>
             <label className="form-label" htmlFor="name">
               Name
             </label>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { createUser } from "../../../redux/actions/adminUserActions";
+import { createNewUser } from "../../../redux/actions/adminUserActions";
 
 const SignUpToggle = ({ toggleSignUp }) => {
   const [name, setName] = useState("");
-  const [userEmail, setEmail] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordA, setPasswordA] = useState("");
   const [type, setType] = useState("");
@@ -16,13 +16,26 @@ const SignUpToggle = ({ toggleSignUp }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (name.trim() === "") {
+      return;
+    }
+
+    console.log({
+      email: userEmail,
+      password,
+      passwordA,
+      userName: name,
+      userType: type,
+    });
+
     const userCredentials = {
       email: userEmail,
       password,
+      passwordA,
       userName: name,
       userType: type,
     };
-    dispatch(createUser(userCredentials)).then(() => toggleSignUp());
+    dispatch(createNewUser(userCredentials)).then(() => toggleSignUp());
   };
 
   return (
@@ -64,7 +77,7 @@ const SignUpToggle = ({ toggleSignUp }) => {
               placeholder="your@email.com"
               required
               value={userEmail}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
           </div>
 

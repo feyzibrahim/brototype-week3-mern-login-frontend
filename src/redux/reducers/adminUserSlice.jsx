@@ -3,7 +3,7 @@ import {
   adminGetAllUser,
   deleteUser,
   updateUser,
-  createUser,
+  createNewUser,
 } from "../actions/adminUserActions";
 
 const adminUserSlice = createSlice({
@@ -70,15 +70,15 @@ const adminUserSlice = createSlice({
         state.error = payload;
       })
       // Creating new users
-      .addCase(createUser.pending, (state) => {
+      .addCase(createNewUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(createUser.fulfilled, (state, { payload }) => {
+      .addCase(createNewUser.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.adminUser.push(payload);
+        state.adminUser = [...state.adminUser, payload];
       })
-      .addCase(createUser.rejected, (state, { payload }) => {
+      .addCase(createNewUser.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

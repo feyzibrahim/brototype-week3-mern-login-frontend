@@ -1,16 +1,18 @@
 import { createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
-
 export const adminGetAllUser = createAsyncThunk(
   "adminUser/adminGetAllUser",
-  async (userCredentials, { rejectWithValue }) => {
+  async (userCredentials, { rejectWithValue, getState }) => {
     try {
+      const { token } = getState().user.user;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
       const { data } = await axios.get(
         `http://localhost:4000/api/admin/users`,
         config
@@ -28,12 +30,49 @@ export const adminGetAllUser = createAsyncThunk(
   }
 );
 
+export const createNewUser = createAsyncThunk(
+  "adminUser/createNewUser",
+  async (userCredentials, { rejectWithValue, getState }) => {
+    try {
+      const { token } = getState().user.user;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `http://localhost:4000/api/admin/newUser`,
+        JSON.stringify(userCredentials),
+        config
+      );
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        console.log(error.response.data.error);
+
+        return rejectWithValue(error.response.data.error);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 export const deleteUser = createAsyncThunk(
   "adminUser/deleteUser",
-  async ({ userId }, { rejectWithValue }) => {
+  async ({ userId }, { rejectWithValue, getState }) => {
     // console.log(userCredentials);
 
     try {
+      const { token } = getState().user.user;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
       const { data } = await axios.delete(
         `http://localhost:4000/api/admin/user/${userId}`,
         config
@@ -53,8 +92,18 @@ export const deleteUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "adminUser/updateUser",
-  async ({ userId, email, userName, userType }, { rejectWithValue }) => {
+  async (
+    { userId, email, userName, userType },
+    { rejectWithValue, getState }
+  ) => {
     try {
+      const { token } = getState().user.user;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
       const { data } = await axios.patch(
         `http://localhost:4000/api/admin/user/${userId}`,
         JSON.stringify({
@@ -62,29 +111,6 @@ export const updateUser = createAsyncThunk(
           userName: userName,
           userType: userType,
         }),
-        config
-      );
-
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.error) {
-        console.log(error.response.data.error);
-
-        return rejectWithValue(error.response.data.error);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  }
-);
-
-export const createUser = createAsyncThunk(
-  "adminUser/createUser",
-  async (userCredentials, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post(
-        `http://localhost:4000/api/admin/user`,
-        userCredentials,
         config
       );
 

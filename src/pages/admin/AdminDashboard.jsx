@@ -17,7 +17,7 @@ const AdminDashboard = () => {
   const [signUpOn, setSignUpOn] = useState(false);
   const dispatch = useDispatch();
 
-  const { loading } = useSelector((state) => state.adminUser);
+  const { loading, error } = useSelector((state) => state.adminUser);
   const searchQuery = useSelector((state) => state.adminUser.searchQuery);
 
   const filteredUsers = useSelector(selectFilteredUsers);
@@ -61,7 +61,8 @@ const AdminDashboard = () => {
           <AiOutlineUserAdd className="mr-2" /> New User
         </button>
       </div>
-      {loading ? <LoadingCircle /> : ""}
+      {error && <p>{error}</p>}
+      {loading && <LoadingCircle />}
       {filteredUsers && (
         <table className="table w-4/5 mx-auto bg-white ">
           <thead className="text-left">

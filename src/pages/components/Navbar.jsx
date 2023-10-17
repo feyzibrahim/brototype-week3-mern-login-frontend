@@ -19,7 +19,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
             <NavLink to="/" className="text-white cursor-pointer" href="">
-              bloggger.com
+              bloggger
             </NavLink>
           </div>
           <div className="hidden md:block">
@@ -43,12 +43,23 @@ const Navbar = () => {
                 About
               </NavLink>
               {user ? (
-                <button
-                  className="navbar-anchor border border-gray-600"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+                <>
+                  <NavLink
+                    to="/profile"
+                    className="navbar-anchor"
+                    style={({ isActive }) => ({
+                      background: isActive ? "#374151" : "",
+                    })}
+                  >
+                    Profile
+                  </NavLink>
+                  <button
+                    className="navbar-anchor border border-gray-600"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </>
               ) : (
                 <>
                   <NavLink
