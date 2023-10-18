@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../redux/actions/userActions";
 import { Link, useNavigate } from "react-router-dom";
+import avatar from "../img/avatar.png";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -40,27 +41,32 @@ const Signup = () => {
       return;
     }
 
-    let userCredentials = {
-      email,
-      password,
-      userName,
-    };
+    const formData = new FormData();
+    formData.append("userName", userName);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("profilePhoto", profilePhoto);
 
-    // console.log(userCredentials);
-
-    dispatch(signUpUser(userCredentials));
+    dispatch(signUpUser(formData));
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md w-full p-6 bg-white shadow-lg rounded mx-5 lg:mx-0 ">
-        <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
+      <div className="max-w-md w-full p-6 bg-white shadow-lg rounded mx-5 mt-5 lg:mx-0 ">
+        <h2 className="text-2xl font-bold mb-6 ">Sign Up</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <div className="mb-4">
+          <div className="mb-2">
+            <div className="mb-2">
               <label className="form-label" htmlFor="profilePhoto">
                 Profile Photo
               </label>
+              <img
+                src={previewPhoto || avatar}
+                alt="Profile Preview"
+                className={`mt-2 w-20 h-20 object-cover ${
+                  previewPhoto && "rounded-full"
+                }`}
+              />
               <input
                 className="input-box-default"
                 id="profilePhoto"
@@ -68,13 +74,6 @@ const Signup = () => {
                 accept="image/*"
                 onChange={handleFileChange}
               />
-              {previewPhoto && (
-                <img
-                  src={previewPhoto}
-                  alt="Profile Preview"
-                  className="mt-2 w-20 h-20 object-cover rounded-full"
-                />
-              )}
             </div>
             <label className="form-label" htmlFor="name">
               Name
@@ -83,13 +82,13 @@ const Signup = () => {
               className="input-box-default"
               id="name"
               type="text"
-              placeholder="Feyz Ibrahim"
+              placeholder="Enter your Name"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label className="form-label" htmlFor="email">
               Email
             </label>
@@ -97,14 +96,14 @@ const Signup = () => {
               className="input-box-default"
               id="email"
               type="email"
-              placeholder="faizibrahim@gmail.com"
+              placeholder="Enter your Email"
               required
               value={userEmail}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-2">
             <label className="form-label" htmlFor="password">
               Password
             </label>
@@ -112,13 +111,13 @@ const Signup = () => {
               className="input-box-default"
               id="password"
               type="password"
-              placeholder="Faiz@1234"
+              placeholder="Enter your Password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label className="form-label" htmlFor="password">
               Confirm Password
             </label>
@@ -126,7 +125,7 @@ const Signup = () => {
               className="input-box-default"
               id="passwordA"
               type="password"
-              placeholder="Faiz@1234"
+              placeholder="Enter your Password"
               required
               value={passwordA}
               onChange={(e) => setPasswordA(e.target.value)}

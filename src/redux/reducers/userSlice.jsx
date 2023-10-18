@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, signUpUser } from "../actions/userActions";
+import { loginUser, signUpUser, updateUser } from "../actions/userActions";
+import toast from "react-hot-toast";
 
 const user = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
@@ -18,7 +19,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.user = null;
       state.error = null;
-      window.location.reload();
     },
   },
   extraReducers: (builder) => {
@@ -49,6 +49,22 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(signUpUser.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.error = action.payload;
+      })
+      // Updating States
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.user = payload;
+        state.error = null;
+        toast.success("Update Successfully");
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.error = action.payload;

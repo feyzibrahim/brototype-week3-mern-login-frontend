@@ -68,6 +68,7 @@ const AdminDashboard = () => {
           <thead className="text-left">
             <tr>
               <th className="table-head">#</th>
+              <th className="table-head">Profile</th>
               <th className="table-head">Name</th>
               <th className="table-head">Email</th>
               <th className="table-head">User Type</th>

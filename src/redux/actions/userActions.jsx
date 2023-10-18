@@ -39,14 +39,45 @@ export const signUpUser = createAsyncThunk(
     try {
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       };
 
       // Axios Post
       const { data } = await axios.post(
         `http://localhost:4000/api/user/signup`,
-        JSON.stringify(userCredentials),
+        userCredentials,
+        config
+      );
+
+      localStorage.setItem("user", JSON.stringify(data));
+
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        console.log(error.response.data.error);
+
+        return rejectWithValue(error.response.data.error);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async ({ userId, userCredentials }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await axios.patch(
+        `http://localhost:4000/api/user/update/${userId}`,
+        userCredentials,
         config
       );
 

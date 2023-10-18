@@ -37,13 +37,13 @@ export const createNewUser = createAsyncThunk(
       const { token } = getState().user.user;
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.post(
         `http://localhost:4000/api/admin/newUser`,
-        JSON.stringify(userCredentials),
+        userCredentials,
         config
       );
       return data;
@@ -92,25 +92,20 @@ export const deleteUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "adminUser/updateUser",
-  async (
-    { userId, email, userName, userType },
-    { rejectWithValue, getState }
-  ) => {
+  async ({ userId, userCredentials }, { rejectWithValue, getState }) => {
     try {
       const { token } = getState().user.user;
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       };
+      console.log(userId);
+      console.log(userCredentials);
       const { data } = await axios.patch(
         `http://localhost:4000/api/admin/user/${userId}`,
-        JSON.stringify({
-          email: email,
-          userName: userName,
-          userType: userType,
-        }),
+        userCredentials,
         config
       );
 

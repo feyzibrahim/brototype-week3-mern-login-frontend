@@ -5,6 +5,7 @@ import {
   updateUser,
   createNewUser,
 } from "../actions/adminUserActions";
+import toast from "react-hot-toast";
 
 const adminUserSlice = createSlice({
   name: "adminUser",
@@ -45,6 +46,7 @@ const adminUserSlice = createSlice({
           (us) => us._id !== payload._id
         );
         state.error = null;
+        toast.success("Successfully Deleted the User");
       })
       .addCase(deleteUser.rejected, (state, { payload }) => {
         state.loading = false;
@@ -64,6 +66,7 @@ const adminUserSlice = createSlice({
         if (index !== -1) {
           state.adminUser[index] = payload;
         }
+        toast.success("User Updated");
       })
       .addCase(updateUser.rejected, (state, { payload }) => {
         state.loading = false;
@@ -77,6 +80,7 @@ const adminUserSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.adminUser = [...state.adminUser, payload];
+        toast.success("New User Created");
       })
       .addCase(createNewUser.rejected, (state, { payload }) => {
         state.loading = false;

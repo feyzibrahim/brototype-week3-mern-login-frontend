@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { createNewUser } from "../../../redux/actions/adminUserActions";
+import avatar from "../../../img/avatar.png";
 
 const SignUpToggle = ({ toggleSignUp }) => {
   const [name, setName] = useState("");
@@ -9,9 +10,20 @@ const SignUpToggle = ({ toggleSignUp }) => {
   const [password, setPassword] = useState("");
   const [passwordA, setPasswordA] = useState("");
   const [type, setType] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [previewPhoto, setPreviewPhoto] = useState(null);
 
   const { loading, error } = useSelector((state) => state.adminUser);
   const dispatch = useDispatch();
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePhoto(file);
+
+    // Create a preview URL for the selected file
+    const previewURL = URL.createObjectURL(file);
+    setPreviewPhoto(previewURL);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,22 +32,16 @@ const SignUpToggle = ({ toggleSignUp }) => {
       return;
     }
 
-    console.log({
-      email: userEmail,
-      password,
-      passwordA,
-      userName: name,
-      userType: type,
-    });
+    const userCredentials = new FormData();
 
-    const userCredentials = {
-      email: userEmail,
-      password,
-      passwordA,
-      userName: name,
-      userType: type,
-    };
-    dispatch(createNewUser(userCredentials)).then(() => toggleSignUp());
+    userCredentials.append("userName", name);
+    userCredentials.append("email", userEmail);
+    userCredentials.append("password", password);
+    userCredentials.append("passwordA", passwordA);
+    userCredentials.append("userType", type);
+    userCredentials.append("profilePhoto", profilePhoto);
+
+    dispatch(createNewUser(userCredentials));
   };
 
   return (
@@ -52,6 +58,23 @@ const SignUpToggle = ({ toggleSignUp }) => {
         </div>
 
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <img
+              src={previewPhoto || avatar}
+              alt="Profile Preview"
+              className="mt-2 w-20 h-20 object-cover rounded-full"
+            />
+            <label className="form-label" htmlFor="profilePhoto">
+              Choose a Profile Photo
+            </label>
+            <input
+              className="input-box-default"
+              id="profilePhoto"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </div>
           <div className="mb-4">
             <label className="form-label" htmlFor="name">
               Name
